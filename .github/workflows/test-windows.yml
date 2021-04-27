@@ -10,6 +10,7 @@ jobs:
     steps:
     - uses: microsoft/setup-msbuild@v1
     - uses: ilammy/setup-nasm@v1
+    - uses: seanmiddleditch/gha-setup-ninja@master
     - uses: actions/checkout@v2
 
     - name: Setup Rust
@@ -18,3 +19,4 @@ jobs:
         rustc -vV
         cargo -vV
         nasm --version
+        ninja --version
