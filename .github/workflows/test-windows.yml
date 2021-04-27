@@ -16,7 +16,7 @@ jobs:
         cmd.exe /c "call `"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat`" && set > %temp%\vcvars.txt"
         Get-Content "$env:temp\vcvars.txt" | Foreach-Object {
           if ($_ -match "^(.*?)=(.*)$") {
-            Set-Content "env:\$($matches[1])" $matches[2]
+            echo "$matches[1]=$matches[2]" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
           }
         }
         $env:path
