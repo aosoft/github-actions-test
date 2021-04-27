@@ -9,14 +9,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - uses: microsoft/setup-msbuild@v1
     - uses: ilammy/setup-nasm@v1
     - uses: ashutoshvarma/setup-ninja@master
-
-    - name: Setup Rust
+    - name: Setup Visual Studio 2019
       run: |
-        rustup default stable-x86_64-pc-windows-msvc
-        rustc -vV
-        cargo -vV
-        nasm --version
+        cmd.exe /c "call `"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat`" && set > %temp%\vcvars.txt"
+        Get-Content "$env:temp\vcvars.txt" | Foreach-Object {
+          if ($_ -match "^(.*?)=(.*)$") {
+            Write-Output $matches[1] + " " + $matches[2]
+            Set-Content "env:\$($matches[1])" $matches[2]
+          }
+        }
+    - name: Check
+      run: |
+        $env:path
         ninja --version
+        nasm --version
