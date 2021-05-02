@@ -23,6 +23,10 @@ jobs:
     #      }
     #    }
     #    $env:path
+    - name: SHA8
+      run: |
+        $sha8=$env:GITHUB_SHA.Substring(0, 8)
+        echo "SHA8=$sha8" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8
     - name: Check
       run: |
         $env:path
@@ -32,3 +36,5 @@ jobs:
         echo SHA=$env:GITHUB_SHA
         echo REF=${{ github.ref }}
         echo REF=$env:GITHUB_REF
+        echo SHA8=${{ env.SHA8 }}
+        echo SHA8=$env:SHA8
