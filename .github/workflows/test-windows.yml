@@ -1,7 +1,7 @@
 name: test-windows
 
 on:
-  workflow_dispatch:
+  [push, workflow_dispatch]
 
 jobs:
   build:
@@ -9,22 +9,26 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - uses: ilammy/setup-nasm@v1
-    - uses: ashutoshvarma/setup-ninja@master
-    - name: Setup Visual Studio 2019
-      run: |
-        cmd.exe /c "call `"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat`" && set > %temp%\vcvars.txt"
-        Get-Content "$env:temp\vcvars.txt" | Foreach-Object {
-          if ($_ -match "^(.*?)=(.*)$") {
-            $key=$matches[1].ToString()
-            $value=$matches[2].ToString()
-            echo "$key=$value"
-            echo "$key=$value" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
-          }
-        }
-        $env:path
+    #- uses: ilammy/setup-nasm@v1
+    #- uses: ashutoshvarma/setup-ninja@master
+    #- name: Setup Visual Studio 2019
+    #  run: |
+    #    cmd.exe /c "call `"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat`" && set > %temp%\vcvars.txt"
+    #    Get-Content "$env:temp\vcvars.txt" | Foreach-Object {
+    #      if ($_ -match "^(.*?)=(.*)$") {
+    #        $key=$matches[1].ToString()
+    #        $value=$matches[2].ToString()
+    #        echo "$key=$value"
+    #        echo "$key=$value" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
+    #      }
+    #    }
+    #    $env:path
     - name: Check
       run: |
         $env:path
-        ninja --version
-        nasm --version
+        #ninja --version
+        #nasm --version
+        echo SHA=${{ env.GITHUB_SHA }}
+        echo SHA=$env:GITHUB_SHA
+        echo SHA=${{ env.GITHUB_REF }}
+        echo SHA=$env:GITHUB_REF
